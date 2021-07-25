@@ -20,27 +20,6 @@ async def on_ready():
 
 
 @bot.command()
-async def rusty(ctx):
-    print(f'{ctx.message.author} has been used command rusty.')
-    await ctx.channel.trigger_typing()
-    help_embed = discord.Embed(title="Список команд Rusty",
-                               description="Бот в разработке, поэтому список будет пополняться.", color=0x01579b)
-    help_embed.set_thumbnail(
-        url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/google/3/cat-face-with-wry-smile_1f63c.png")
-    help_embed.add_field(name="Фановые команды:", value="/creeper - лучше не надо\n"
-                                                        "/enchant <text> - зашифровать сообщение\n"
-                                                        "/unenchant <text> - дешифровать сообщение\n"
-                                                        "/villager <text> - переводчик на язык жителей\n",
-                         inline=False)
-    help_embed.add_field(name="Отладка:", value="/ping - задержка бота в мс\n"
-                                                "/info - статистика\n",
-                         inline=False)
-    help_embed.set_footer(text="Information provided by Rusty",
-                          icon_url="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/google/3/paw-prints_1f43e.png")
-    await ctx.send(embed=help_embed)
-
-
-@bot.command()
 @commands.has_permissions(administrator=True)
 async def start(ctx):
     print(f'{ctx.message.author} has been used command start.')
