@@ -33,6 +33,8 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
             os.chdir(minecraft_dir)
             os.system('bash start.sh')
             await ctx.send(f"Запуск сервера...")
+            await asyncio.sleep(10)
+            await ctx.send(f"Сервер запущен.")
         else:
             await ctx.send(f"Сервер уже запущен и работает.")
 
