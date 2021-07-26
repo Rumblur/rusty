@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 
 import discord
@@ -12,9 +13,16 @@ class Status(commands.Cog):
         self.bot = bot
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def status(self, ctx):
+        while True:
+            await self.update_message(ctx)
+            await asyncio.sleep(60)
+
+    async def update_message(self, ctx):
         """Показывает статистику сервера Rumblur."""
-        await ctx.trigger_typing()
+        channel = ctx.bot.get_channel(741255934721916989)
+        msg = await channel.fetch_message(808644874366746704)
         try:
             ip = "rumblur.by"
             server = MinecraftServer.lookup(ip)
@@ -23,6 +31,21 @@ class Status(commands.Cog):
             max_players_count = status.raw["players"]["max"]
             online_players_count = status.raw["players"]["online"]
             player_names = server.query().players.names
+
+            server_online_status = discord.Status.online
+            if online_players_count == max_players_count:
+                server_online_status = discord.Status.do_not_disturb
+            if int(online_players_count) == 0:
+                activity = discord.Activity(type=discord.ActivityType.watching,
+                                            name="в пустоту")
+            elif int(online_players_count) == 1:
+                activity = discord.Activity(type=discord.ActivityType.watching,
+                                            name=f"за {online_players_count} игроком")
+            else:
+                activity = discord.Activity(type=discord.ActivityType.watching,
+                                            name=f"за {online_players_count} игроками")
+
+            await ctx.bot.change_presence(activity=activity, status=server_online_status)
 
             if int(online_players_count) > 0:
                 num = 1
@@ -63,7 +86,8 @@ class Status(commands.Cog):
                 name=f"{online_players_count} из " + f"{max_players_count} игроков сейчас на сервере:",
                 value=f"```{player_nicknames}```", inline=False)
             emb.set_footer(text="Information provided by Rusty", icon_url="https://rumblur.by/images/paws.png")
-            await ctx.send(embed=emb)
+            await msg.edit(content="Слежу за сервером...")
+            await msg.edit(embed=emb)
         except IOError as ex:
             emb = discord.Embed(title="Сервер недоступен", color=discord.Colour.red(),
                                 timestamp=datetime.datetime.utcnow())
@@ -75,7 +99,8 @@ class Status(commands.Cog):
             emb.add_field(name="Как решить проблему?",
                           value=f"Пожалуйста, обратитесь к администрации через сообщения группы ВК.", inline=False)
             emb.set_footer(text="Information provided by Rusty", icon_url="https://rumblur.by/images/paws.png")
-            await ctx.send(embed=emb)
+            await msg.edit(content="Слежу за сервером...")
+            await msg.edit(embed=emb)
         except:
             await ctx.send("Что-то пошло не так.")
 

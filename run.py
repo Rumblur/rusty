@@ -1,11 +1,14 @@
+import asyncio
 import os
 import sys
 import traceback
+from asyncio import run
 
 import discord
 from discord.ext import commands
 
 import secret
+from cogs.status import Status
 
 client = commands.Bot(command_prefix=",")
 client.remove_command('help')
@@ -29,6 +32,5 @@ async def on_ready():
             except Exception:
                 print(f'Failed to load module {module}.{os.path.splitext(extension)[0]}.', file=sys.stderr)
                 traceback.print_exc()
-
 
 client.run(secret.secret)
