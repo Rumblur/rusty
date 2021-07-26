@@ -6,11 +6,14 @@ from mcstatus import MinecraftServer
 
 
 class Status(commands.Cog):
+    """Команды, связанные со статусом сервера Rumblur."""
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
     async def status(self, ctx):
+        """Показывает статистику сервера Rumblur."""
         await ctx.trigger_typing()
         try:
             ip = "rumblur.by"

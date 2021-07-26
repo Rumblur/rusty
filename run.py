@@ -8,6 +8,7 @@ from discord.ext import commands
 import secret
 
 client = commands.Bot(command_prefix=",")
+client.remove_command('help')
 
 
 def list_module(directory):
