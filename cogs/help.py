@@ -15,7 +15,7 @@ class Help(commands.Cog):
         if not cog:
             helpEmbed = discord.Embed(title='Доступные модули',
                                       description=f'Используйте команду `{ctx.prefix}help *название модуля*` чтобы узнать больше.',
-                                      color=discord.Colour.red())
+                                      color=discord.Colour.blue())
             cogs_desc = ''
             for x in self.bot.cogs:
                 cogs_desc += f'**{x}** - {self.bot.cogs[x].__doc__}\n'
@@ -36,7 +36,7 @@ class Help(commands.Cog):
                         if x == y:
                             helpEmbed = discord.Embed(title=f'Команды модуля {cog[0]}',
                                                       description=self.bot.cogs[cog[0]].__doc__,
-                                                      color=discord.Colour.red())
+                                                      color=discord.Colour.blue())
                             for c in self.bot.get_cog(y).get_commands():
                                 if not c.hidden:
                                     helpEmbed.add_field(name=c.name, value=c.help, inline=False)
