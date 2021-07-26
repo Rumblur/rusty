@@ -32,9 +32,20 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
         if not status():
             os.chdir(minecraft_dir)
             os.system('bash start.sh')
-            ctx.send("Сервер запущен.")
+            await ctx.send(f"Сервер запущен.")
         else:
-            ctx.send("Сервер уже запущен и работает.")
+            await ctx.send(f"Сервер уже запущен и работает.")
+
+    @commands.command()
+    async def start(self, ctx):
+        """Останавливает сервер Minecraft."""
+        if status():
+            server_command('save-all')
+            await ctx.send(f"Сохранение мира...")
+            server_command('stop')
+            await ctx.send(f"Остановка сервера...")
+        else:
+            await ctx.send(f"Сервер выключен.")
 
 
 def setup(bot):
