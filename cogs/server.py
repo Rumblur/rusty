@@ -29,11 +29,10 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
     @commands.command()
     async def start(self, ctx):
         """Запускает сервер Rumblur."""
-        await ctx.send(f"Запуск сервера...")
         if not status():
             os.chdir(minecraft_dir)
             os.system('bash start.sh')
-            await ctx.send(f"Сервер запущен.")
+            await ctx.send(f"Запуск сервера...")
         else:
             await ctx.send(f"Сервер уже запущен и работает.")
 
