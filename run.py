@@ -94,11 +94,11 @@ async def update_message():
                                 timestamp=datetime.datetime.utcnow())
             emb.set_author(name="Rumblur Classic", url="https://rumblur.by",
                            icon_url="https://rumblur.by/images/chainfire.png")
-            emb.set_thumbnail(url="https://rumblur.by/images/rusty.png")
+            emb.set_thumbnail(url="https://rumblur.by/images/chainfire.gif")
             emb.add_field(name="Сообщение дня", value=f"```{motd}```", inline=False)
             emb.add_field(name="IP-адрес", value=f"{ip}", inline=True)
             emb.add_field(name="Версия сервера", value=f"{version}", inline=True)
-            emb.add_field(name="Пинг", value=f"{server.ping()} мс", inline=True)
+            emb.add_field(name="Статус", value="Онлайн", inline=True)
             emb.add_field(
                 name=f"{online_players_count} из " + f"{max_players_count} игроков сейчас на сервере:",
                 value=f"```{player_nicknames}```", inline=False)
