@@ -27,52 +27,55 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
         self.bot = bot
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def start(self, ctx):
         """Запускает сервер Rumblur."""
         if not status():
             os.chdir(minecraft_dir)
             os.system('bash start.sh')
-            await ctx.send(f"Запуск сервера...")
+            await ctx.send(f"`Запуск сервера...`")
             await asyncio.sleep(10)
-            await ctx.send(f"Сервер запущен.")
+            await ctx.send(f"`Сервер запущен.`")
         else:
-            await ctx.send(f"Сервер уже запущен и работает.")
+            await ctx.send(f"`Сервер уже запущен и работает.`")
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def restart(self, ctx):
         """Перезагружает сервер Rumblur."""
         server_command('tellraw @a {\"text\":\"Перезагрузка через 30 секунд!\",\"color\":\"light_purple\"}')
-        await ctx.send(f"Оповещение игроков. Перезагрузка через 30 секунд.")
+        await ctx.send(f"`Оповещение игроков. Перезагрузка через 30 секунд.`")
         await asyncio.sleep(15)
         server_command(
             'tellraw @a {\"text\":\"Перезагрузка через 15 секунд! Началось сохранение...\",\"color\":\"light_purple\"}')
-        await ctx.send(f"Оповещение игроков. Перезагрузка через 15 секунд. Сохранение через 5 секунд.")
+        await ctx.send(f"`Оповещение игроков. Перезагрузка через 15 секунд. Сохранение через 5 секунд.`")
         await asyncio.sleep(5)
         server_command('save-all')
-        await ctx.send(f"Сохранение мира...")
+        await ctx.send(f"`Сохранение мира...`")
         await asyncio.sleep(10)
         server_command('stop')
-        await ctx.send(f"Остановка сервера...")
+        await ctx.send(f"`Остановка сервера...`")
         await asyncio.sleep(15)
         os.chdir(minecraft_dir)
         os.system('bash start.sh')
-        await ctx.send(f"Запуск сервера...")
+        await ctx.send(f"`Запуск сервера...`")
         await asyncio.sleep(15)
-        await ctx.send(f"Сервер запущен.")
+        await ctx.send(f"`Сервер запущен.`")
 
     @commands.command()
+    @commands.has_permissions(administrator=True)
     async def stop(self, ctx):
         """Останавливает сервер Rumblur."""
         if status():
             server_command('save-all')
-            await ctx.send(f"Сохранение мира...")
+            await ctx.send(f"`Сохранение мира...`")
             await asyncio.sleep(10)
             server_command('stop')
-            await ctx.send(f"Остановка сервера...")
+            await ctx.send(f"`Остановка сервера...`")
             await asyncio.sleep(10)
-            await ctx.send(f"Сервер выключен.")
+            await ctx.send(f"`Сервер выключен.`")
         else:
-            await ctx.send(f"Сервер выключен.")
+            await ctx.send(f"`Сервер выключен.`")
 
 
 def setup(bot):

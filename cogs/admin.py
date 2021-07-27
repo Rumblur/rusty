@@ -19,7 +19,7 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True), name="Admin"):
         await self.bot.close()
 
     @commands.command(name='pull')
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     async def git_update(self, ctx):
         """Pulls the bot from GitHub."""
         now = datetime.now()
