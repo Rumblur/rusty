@@ -1,4 +1,4 @@
-![GitHub repo size](https://img.shields.io/github/repo-size/Rumblur/rusty) ![GitHub top language](https://img.shields.io/github/languages/top/Rumblur/rusty)
+![GitHub repo size](https://img.shields.io/github/repo-size/Rumblur/rusty) ![GitHub top language](https://img.shields.io/github/languages/top/Rumblur/rusty) ![Discord](https://img.shields.io/discord/741253654064922714)
 
 # ![app icon](https://rumblur.by/images/rusty.png)Rusty
 Discord bot special for monitoring a Rumblur Minecraft Server
