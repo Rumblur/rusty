@@ -1,9 +1,9 @@
-![GitHub repo size](https://img.shields.io/github/repo-size/Rumblur/rusty) ![GitHub top language](https://img.shields.io/github/languages/top/Rumblur/rusty)
+![GitHub repo size](https://img.shields.io/github/repo-size/Rumblur/rusty) ![GitHub top language](https://img.shields.io/github/languages/top/Rumblur/rusty) ![Discord](https://img.shields.io/discord/741253654064922714)
 
 # ![app icon](https://rumblur.by/images/rusty.png)Rusty
 Discord bot special for monitoring a Rumblur Minecraft Server
 
-![image](https://user-images.githubusercontent.com/61558546/126912823-bd10c016-fd34-4910-a847-ae430d8b659b.png)
+![image](https://user-images.githubusercontent.com/61558546/127241259-eb5ae564-9b3a-4b65-9ecd-1da61a6e1d38.png)
 
 ### Token
 Get a token in the bot settings, then create a file `secret.py` with the following content:
