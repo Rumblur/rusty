@@ -11,14 +11,14 @@ class RCON(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def login(self, ctx, ip=None, password=None):
+    async def login(self, ctx, ip=None, port=None, password=None):
         if ip and password:
-            self.bot.rcon_cache[ctx.author.id] = {"ip": ip, "pass": password,
+            self.bot.rcon_cache[ctx.author.id] = {"ip": ip, "pass": password, "port": port,
                                                   "expires": datetime.datetime.now() + datetime.timedelta(
                                                       minutes=10)}
             await ctx.send("Учетные данные кэшированы!")
         else:
-            await ctx.send('Использование: `,login "ip" "password"`')
+            await ctx.send('Использование: `,login "ip" "port" "password"`')
 
     @commands.command()
     async def run(self, ctx, *, command):
@@ -35,7 +35,7 @@ class RCON(commands.Cog):
         self.bot.rcon_cache[ctx.author.id]["expires"] = datetime.datetime.now() + datetime.timedelta(minutes=10)
 
         try:
-            with MCRcon(creds["ip"], creds["pass"]) as mcr:
+            with MCRcon(creds["ip"], creds["pass"], int(creds["port"])) as mcr:
                 response = mcr.command(command)
                 if len(response) <= 1800:
                     await ctx.send("Ответ: ```{}```".format(response))
