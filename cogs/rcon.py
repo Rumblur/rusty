@@ -5,23 +5,24 @@ from discord.ext import commands
 from mcrcon import MCRcon
 from six import BytesIO
 
+import secret
+
 
 class RCON(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
-    async def login(self, ctx, ip=None, port=None, password=None):
-        if ip and password:
-            self.bot.rcon_cache[ctx.author.id] = {"ip": ip, "pass": password, "port": port,
-                                                  "expires": datetime.datetime.now() + datetime.timedelta(
+    async def rcon(self, ctx, ip=None):
+        if ip:
+            self.bot.rcon_cache[ctx.author.id] = {"ip": ip, "expires": datetime.datetime.now() + datetime.timedelta(
                                                       minutes=10)}
             await ctx.send("Учетные данные кэшированы!")
         else:
-            await ctx.send('Использование: `,login "ip" "port" "password"`')
+            await ctx.send('Использование: `,login "ip"`')
 
     @commands.command()
-    async def run(self, ctx, *, command):
+    async def exec(self, ctx, *, command):
         try:
             creds = self.bot.rcon_cache[ctx.author.id]
         except:
@@ -35,7 +36,7 @@ class RCON(commands.Cog):
         self.bot.rcon_cache[ctx.author.id]["expires"] = datetime.datetime.now() + datetime.timedelta(minutes=10)
 
         try:
-            with MCRcon(creds["ip"], creds["pass"], int(creds["port"])) as mcr:
+            with MCRcon(creds["ip"], secret.rcon_password, secret.rcon_port) as mcr:
                 response = mcr.command(command)
                 if len(response) <= 1800:
                     await ctx.send("Ответ: ```{}```".format(response))

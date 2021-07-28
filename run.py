@@ -124,4 +124,4 @@ async def update_message():
         await asyncio.sleep(30)
 
 
-client.run(secret.secret)
+client.run(secret.token)
