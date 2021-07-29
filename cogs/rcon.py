@@ -22,9 +22,11 @@ class RCON(commands.Cog):
                     # BadCoder
                     pretty_response = re.sub('(§[0-9a-fA-Fkmorln])|(§\[#[0-9a-fA-F]{1,6}])|(§$)', '', response)
                     if len(response) <= 1800:
-                        await ctx.send("Ответ: ```{}```".format(pretty_response))
+                        await ctx.send(f"Ответ: ```{pretty_response}```")
+                    elif len(response) == 0:
+                        await ctx.send("`Пустой ответ`")
                     else:
-                        await ctx.send("Ответ был слишком долгим.",
+                        await ctx.send("`Ответ был слишком большим.`",
                                        file=discord.File(BytesIO(response.encode()), "response.txt"))
             else:
                 await ctx.send('Использование: `,exec "command без /, как в консоли"`')
