@@ -12,7 +12,6 @@ import secret
 
 client = commands.Bot(command_prefix=",")
 client.remove_command('help')
-client.rcon_cache = {}
 
 
 def list_module(directory):
