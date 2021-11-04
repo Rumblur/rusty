@@ -9,7 +9,9 @@ from six import BytesIO
 import secret
 
 
-class RCON(commands.Cog):
+class RCON(commands.Cog, command_attrs=dict(hidden=True), name="RCON"):
+    """Команды, предназначенные для управления сервером через чат Discord. Мы не можем их показать в целях безопасности."""
+
     def __init__(self, bot):
         self.bot = bot
 
