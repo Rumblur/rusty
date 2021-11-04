@@ -21,16 +21,16 @@ class Admin(commands.Cog, command_attrs=dict(hidden=True), name="Admin"):
     @commands.command(name='pull')
     @commands.has_permissions(administrator=True)
     async def git_update(self, ctx):
-        """Pulls the bot from GitHub."""
+        """Обновляет бота с GitHub."""
         now = datetime.now()
         message = ""
         repo = Repo(path=os.getcwd())
         o = repo.remotes.origin
         for fetch_info in o.pull():
-            message += f"\n Updated '{fetch_info.ref}' To '{fetch_info.commit}'"
+            message += f"\n Updated '{fetch_info.ref}' to '{fetch_info.commit}'"
         later = datetime.now()
         difference = (later - now).total_seconds()
-        await ctx.send(f"Operation completed successfully in {difference}s. Output: ```prolog\n{message}\n```")
+        await ctx.send(f"Операция выполнена успешно за {difference} с. Вывод: ```prolog\n{message}\n```")
 
 
 def setup(bot):
