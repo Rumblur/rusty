@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import os
+import subprocess
 import sys
 import traceback
 
@@ -16,6 +17,10 @@ client.remove_command('help')
 
 def list_module(directory):
     return (f for f in os.listdir(directory) if f.endswith('.py'))
+
+
+def get_git_tag() -> str:
+    return subprocess.check_output(['git', 'describe', '--tags']).decode('ascii').strip()
 
 
 @client.event
@@ -107,7 +112,7 @@ async def check_server_status():
             emb.add_field(
                 name=f"{online_players_count} из " + f"{max_players_count} игроков сейчас на сервере:",
                 value=f"```{player_nicknames}```", inline=False)
-            emb.set_footer(text="Information provided by Rusty", icon_url="https://rumblur.by/images/paws.png")
+            emb.set_footer(text=f"Rusty v{get_git_tag()}", icon_url="https://rumblur.by/images/paws.png")
             await msg.edit(content="Слежу за сервером...")
             await msg.edit(embed=emb)
         except IOError as ex:
@@ -124,7 +129,7 @@ async def check_server_status():
                           value=f"`{ex}`", inline=False)
             emb.add_field(name="Как решить проблему?",
                           value=f"Пожалуйста, обратитесь к администрации через сообщения группы ВК.", inline=False)
-            emb.set_footer(text="Information provided by Rusty", icon_url="https://rumblur.by/images/paws.png")
+            emb.set_footer(text=f"Rusty v{get_git_tag()}", icon_url="https://rumblur.by/images/paws.png")
             await msg.edit(content="Слежу за сервером...")
             await msg.edit(embed=emb)
         await asyncio.sleep(30)
