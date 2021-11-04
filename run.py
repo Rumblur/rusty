@@ -33,10 +33,10 @@ async def on_ready():
                 print(f'Failed to load module {module}.{os.path.splitext(extension)[0]}.', file=sys.stderr)
                 traceback.print_exc()
 
-    await update_message()
+    await check_server_status()
 
 
-async def update_message():
+async def check_server_status():
     channel = client.get_channel(741255934721916989)
     msg = await channel.fetch_message(808644874366746704)
     while True:
@@ -49,20 +49,25 @@ async def update_message():
             online_players_count = status.raw["players"]["online"]
             player_names = server.query().players.names
 
-            server_online_status = discord.Status.online
-            if online_players_count == max_players_count:
-                server_online_status = discord.Status.do_not_disturb
             if int(online_players_count) == 0:
-                activity = discord.Activity(type=discord.ActivityType.watching,
-                                            name="в пустоту")
+                await client.change_presence(
+                    activity=discord.Activity(type=discord.ActivityType.watching, name="в пустоту"),
+                    status=discord.Status.idle)
             elif int(online_players_count) == 1:
-                activity = discord.Activity(type=discord.ActivityType.watching,
-                                            name=f"за {online_players_count} игроком")
+                await client.change_presence(
+                    activity=discord.Activity(type=discord.ActivityType.watching,
+                                              name=f"за {online_players_count} игроком"),
+                    status=discord.Status.online)
+            elif int(online_players_count) == max_players_count:
+                await client.change_presence(
+                    activity=discord.Activity(type=discord.ActivityType.watching,
+                                              name=f"за {online_players_count} игроками"),
+                    status=discord.Status.dnd)
             else:
-                activity = discord.Activity(type=discord.ActivityType.watching,
-                                            name=f"за {online_players_count} игроками")
-
-            await client.change_presence(activity=activity, status=server_online_status)
+                await client.change_presence(
+                    activity=discord.Activity(type=discord.ActivityType.watching,
+                                              name=f"за {online_players_count} игроками"),
+                    status=discord.Status.online)
 
             if int(online_players_count) > 0:
                 num = 1
@@ -106,6 +111,10 @@ async def update_message():
             await msg.edit(content="Слежу за сервером...")
             await msg.edit(embed=emb)
         except IOError as ex:
+            await client.change_presence(
+                activity=discord.Activity(type=discord.ActivityType.watching,
+                                          name=f"на мёртвый сервер"),
+                status=discord.Status.dnd)
             emb = discord.Embed(title="Сервер недоступен", color=discord.Colour.red(),
                                 timestamp=datetime.datetime.utcnow())
             emb.set_author(name="Rumblur Classic", url="https://rumblur.by",
@@ -118,8 +127,6 @@ async def update_message():
             emb.set_footer(text="Information provided by Rusty", icon_url="https://rumblur.by/images/paws.png")
             await msg.edit(content="Слежу за сервером...")
             await msg.edit(embed=emb)
-        except:
-            await msg.edit("Что-то пошло не так.")
         await asyncio.sleep(30)
 
 
