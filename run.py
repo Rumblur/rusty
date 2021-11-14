@@ -100,7 +100,7 @@ async def check_server_status():
                         break
             else:
                 motd = status.raw["description"]
-            emb = discord.Embed(title="Статистика сервера Rumblur", color=discord.Colour.green(),
+            emb = discord.Embed(title="Статус сервера Rumblur", color=discord.Colour.green(),
                                 timestamp=datetime.datetime.utcnow())
             emb.set_author(name="Rumblur Classic", url="https://rumblur.by",
                            icon_url="https://rumblur.by/images/chainfire.png")
