@@ -42,8 +42,9 @@ async def on_ready():
 
 
 async def check_server_status():
-    channel = client.get_channel(741255934721916989)
-    msg = await channel.fetch_message(808644874366746704)
+    info_channel = client.get_channel(741255934721916989)
+    admin_channel = client.get_channel(741254660026925147)
+    msg = await info_channel.fetch_message(808644874366746704)
     while True:
         try:
             ip = "rumblur.by"
@@ -116,10 +117,14 @@ async def check_server_status():
             await msg.edit(content="Слежу за сервером...")
             await msg.edit(embed=emb)
         except IOError as ex:
+
+            # Set presence
             await client.change_presence(
                 activity=discord.Activity(type=discord.ActivityType.watching,
                                           name=f"на мёртвый сервер"),
                 status=discord.Status.dnd)
+
+            # Info embed
             emb = discord.Embed(title="Сервер недоступен", color=discord.Colour.red(),
                                 timestamp=datetime.datetime.utcnow())
             emb.set_author(name="Rumblur Classic", url="https://rumblur.by",
@@ -130,9 +135,22 @@ async def check_server_status():
             emb.add_field(name="Как решить проблему?",
                           value=f"Пожалуйста, обратитесь к администрации через сообщения группы ВК.", inline=False)
             emb.set_footer(text=f"Rusty v{get_git_tag()}", icon_url="https://rumblur.by/images/paws.png")
-            await msg.edit(content="Слежу за сервером...")
+
+            # Crash embed for admin channel
+            crash_emb = discord.Embed(title="Сервер недоступен в данный момент.",
+                                      description=f"Причина: `{ex}`",
+                                      color=discord.Colour.red())
+            crash_emb.set_author(name="Having troubles...",
+                                 icon_url="https://rumblur.by/images/block.png")
+            crash_emb.set_thumbnail(
+                url="https://rumblur.by/images/sadcat.png")
+            crash_emb.set_footer(text="Alerted by Rusty",
+                                 icon_url="https://rumblur.by/images/paws.png")
+
+            await msg.edit(content="Whoops...")
             await msg.edit(embed=emb)
-        await asyncio.sleep(30)
+            await admin_channel.send(embed=crash_emb)
+        await asyncio.sleep(90)
 
 
 client.run(secret.token)
