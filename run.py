@@ -47,7 +47,7 @@ async def check_server_status():
     msg = await info_channel.fetch_message(808644874366746704)
     while True:
         try:
-            ip = "rumblur.by"
+            ip = "rumblur.hrebeni.uk"
             server = MinecraftServer.lookup(ip)
             status = server.status()
             version = status.raw["version"]["name"]
@@ -103,9 +103,9 @@ async def check_server_status():
                 motd = status.raw["description"]
             emb = discord.Embed(title="Статус сервера Rumblur", color=discord.Colour.green(),
                                 timestamp=datetime.datetime.utcnow())
-            emb.set_author(name="Rumblur Classic", url="https://rumblur.by",
-                           icon_url="https://rumblur.by/images/chainfire.png")
-            emb.set_thumbnail(url="https://rumblur.by/images/chainfire.gif")
+            emb.set_author(name="Rumblur Classic", url="https://rumblur.hrebeni.uk",
+                           icon_url="https://rumblur.hrebeni.uk/images/chainfire.png")
+            emb.set_thumbnail(url="https://rumblur.hrebeni.uk/images/chainfire.gif")
             emb.add_field(name="Сообщение дня", value=f"```{motd}```", inline=False)
             emb.add_field(name="IP-адрес", value=f"{ip}", inline=True)
             emb.add_field(name="Версия сервера", value=f"{version}", inline=True)
@@ -113,7 +113,7 @@ async def check_server_status():
             emb.add_field(
                 name=f"{online_players_count} из " + f"{max_players_count} игроков сейчас на сервере:",
                 value=f"```{player_nicknames}```", inline=False)
-            emb.set_footer(text=f"Rusty v{get_git_tag()}", icon_url="https://rumblur.by/images/paws.png")
+            emb.set_footer(text=f"Rusty v{get_git_tag()}", icon_url="https://rumblur.hrebeni.uk/images/paws.png")
             await msg.edit(content="Слежу за сервером...")
             await msg.edit(embed=emb)
         except IOError as ex:
@@ -127,25 +127,25 @@ async def check_server_status():
             # Info embed
             emb = discord.Embed(title="Сервер недоступен", color=discord.Colour.red(),
                                 timestamp=datetime.datetime.utcnow())
-            emb.set_author(name="Rumblur Classic", url="https://rumblur.by",
-                           icon_url="https://rumblur.by/images/chainfire.png")
-            emb.set_thumbnail(url="https://rumblur.by/images/sadcat.png")
+            emb.set_author(name="Rumblur Classic", url="https://rumblur.hrebeni.uk",
+                           icon_url="https://rumblur.hrebeni.uk/images/chainfire.png")
+            emb.set_thumbnail(url="https://rumblur.hrebeni.uk/images/sadcat.png")
             emb.add_field(name="Причина",
                           value=f"`{ex}`", inline=False)
             emb.add_field(name="Как решить проблему?",
                           value=f"Пожалуйста, обратитесь к администрации через сообщения группы ВК.", inline=False)
-            emb.set_footer(text=f"Rusty v{get_git_tag()}", icon_url="https://rumblur.by/images/paws.png")
+            emb.set_footer(text=f"Rusty v{get_git_tag()}", icon_url="https://rumblur.hrebeni.uk/images/paws.png")
 
             # Crash embed for admin channel
             crash_emb = discord.Embed(title="Сервер недоступен в данный момент.",
                                       description=f"Причина: `{ex}`",
                                       color=discord.Colour.red())
             crash_emb.set_author(name="Having troubles...",
-                                 icon_url="https://rumblur.by/images/block.png")
+                                 icon_url="https://rumblur.hrebeni.uk/images/block.png")
             crash_emb.set_thumbnail(
                 url="https://rumblur.by/images/sadcat.png")
             crash_emb.set_footer(text="Alerted by Rusty",
-                                 icon_url="https://rumblur.by/images/paws.png")
+                                 icon_url="https://rumblur.hrebeni.uk/images/paws.png")
 
             await msg.edit(content="Whoops...")
             await msg.edit(embed=emb)
