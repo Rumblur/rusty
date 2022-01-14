@@ -19,7 +19,7 @@ class RCON(commands.Cog, command_attrs=dict(hidden=True), name="RCON"):
     async def exec(self, ctx, *, command=None):
         try:
             if command:
-                with MCRcon("rumblur.by", secret.rcon_password, secret.rcon_port) as mcr:
+                with MCRcon("rumblur.hrebeni.uk", secret.rcon_password, secret.rcon_port) as mcr:
                     response = mcr.command(command)
                     # BadCoder
                     pretty_response = re.sub('(§[0-9a-fA-Fkmorln])|(§\[#[0-9a-fA-F]{1,6}])|(§$)', '', response)
