@@ -5,6 +5,8 @@ from discord.ext import commands
 
 minecraft_dir = '/home/artilapx/minecraft/'
 
+#  BadCoder thanks
+
 
 def session_exists():
     return os.system("tmux has-session -t minecraft 2> /dev/null") == 0
@@ -28,27 +30,25 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
     @commands.has_permissions(administrator=True)
     async def start(self, ctx):
         """Запускает сервер Rumblur."""
-        if not attach_session():
-            os.chdir(minecraft_dir)
+        if not session_exists():
             os.system("mtc start --only")
             await ctx.send(f"`Запуск сервера...`")
             await asyncio.sleep(10)  # TODO Избавиться
             await ctx.send(f"`Сервер запущен.`")  # TODO Проверить исходя из состояния
         else:
-            await ctx.send(f"`Сервер уже запущен и работает.`")
+            await ctx.send(f"`Сервер уже запущен и работает. Запуск не требуется.`")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def restart(self, ctx):
         """Перезагружает сервер Rumblur."""
-        os.system(
-            "tmux new-session -s temp -d \"~/minecraft/multitool kill --force; ~/minecraft/multitool start --only\"")
+        os.system("mtc restart --now")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def stop(self, ctx):
         """Останавливает сервер Rumblur."""
-        if attach_session():
+        if session_exists():
             send_command("save-all")
             await ctx.send(f"`Сохранение мира...`")
             await asyncio.sleep(10)  # TODO Избавиться
@@ -57,7 +57,7 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
             await asyncio.sleep(10)  # TODO Избавиться
             await ctx.send(f"`Сервер выключен.`")
         else:
-            await ctx.send(f"`Сервер выключен.`")
+            await ctx.send(f"`Сервер уже выключен. Остановка не требуется.`")
 
 
 def setup(bot):
