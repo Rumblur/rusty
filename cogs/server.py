@@ -1,5 +1,6 @@
 import asyncio
 import os
+import re
 
 from discord.ext import commands
 
@@ -13,7 +14,8 @@ def session_exists():
 
 
 def send_command(command):
-    os.system(f"tmux send-keys -t minecraft.0 \"{command}\" ENTER")
+    patched = re.sub(r"[^\w]", "\\\\\\g<0>", command, 0)
+    os.system(f"tmux send-keys -t minecraft.0 {patched} ENTER")
 
 
 def attach_session():
@@ -32,9 +34,7 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
         """Запускает сервер Rumblur."""
         if not session_exists():
             os.system("mtc start --only")
-            await ctx.send(f"`Запуск сервера...`")
-            await asyncio.sleep(10)  # TODO Избавиться
-            await ctx.send(f"`Сервер запущен.`")  # TODO Проверить исходя из состояния
+            await ctx.send(f"`Отправлен запрос на включение сервера...`")
         else:
             await ctx.send(f"`Сервер уже запущен и работает. Запуск не требуется.`")
 
@@ -42,20 +42,19 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
     @commands.has_permissions(administrator=True)
     async def restart(self, ctx):
         """Перезагружает сервер Rumblur."""
-        os.system("mtc restart --now")
+        if session_exists():
+            os.system("mtc restart --now")
+            await ctx.send(f"`Отправлен запрос на перезагрузку сервера...`")
+        else:
+            await ctx.send(f"`Сервер выключен. Нечего перезагружать.`")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def stop(self, ctx):
         """Останавливает сервер Rumblur."""
         if session_exists():
-            send_command("save-all")
-            await ctx.send(f"`Сохранение мира...`")
-            await asyncio.sleep(10)  # TODO Избавиться
-            send_command("stop")
-            await ctx.send(f"`Остановка сервера...`")
-            await asyncio.sleep(10)  # TODO Избавиться
-            await ctx.send(f"`Сервер выключен.`")
+            os.system("mtc shutdown --confirm")
+            await ctx.send(f"`Отправлен запрос на выключение сервера...`")
         else:
             await ctx.send(f"`Сервер уже выключен. Остановка не требуется.`")
 
