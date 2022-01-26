@@ -13,6 +13,7 @@ def get_git_tag() -> str:
 
 
 class Loop(commands.Cog):
+    """Цикл."""
 
     def __init__(self, bot):
         self.bot = bot
@@ -87,7 +88,6 @@ class Loop(commands.Cog):
                     embed=status_embed(motd, ip, version, online_players_count, max_players_count, player_nicknames,
                                        get_git_tag()))
             except IOError as ex:
-
                 # Set presence
                 await self.bot.change_presence(
                     activity=discord.Activity(type=discord.ActivityType.watching,
@@ -105,9 +105,9 @@ class Loop(commands.Cog):
 
     @check_server_status.after_loop
     async def on_loop_cancel(self):
+        admin_channel = self.bot.get_channel(741254660026925147)
         if self.check_server_status.is_being_cancelled():
-            admin_channel = self.bot.get_channel(741254660026925147)
-            admin_channel.send("Wtf, server status checking cancelled?")
+            await admin_channel.send("Wtf, server status checking cancelled?")
 
     @check_server_status.before_loop
     async def before_loop(self):

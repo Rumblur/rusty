@@ -1,6 +1,6 @@
 import os
 import sys
-import traceback
+from asyncio import sleep
 
 import discord
 from discord.ext import commands
@@ -26,9 +26,13 @@ async def on_ready():
         for extension in list_module(module):
             try:
                 client.load_extension(f'{module}.{os.path.splitext(extension)[0]}')
-            except Exception:
+            except Exception as ex:
                 print(f'Failed to load module {module}.{os.path.splitext(extension)[0]}.', file=sys.stderr)
-                traceback.print_exc()
+                print(ex)
 
-
-client.run(secret.token)
+while True:
+    try:
+        client.run(secret.token)
+    except Exception as e:
+        print(f'Restarting in 10s\nError: {e}')
+        sleep(10)
