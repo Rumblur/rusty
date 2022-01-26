@@ -1,23 +1,25 @@
 import asyncio
 import os
+import re
 
 from discord.ext import commands
 
-minecraft_dir = '/home/artilapx/classic/'
+minecraft_dir = '/home/artilapx/minecraft/'
+
+#  BadCoder thanks
 
 
-def server_command(cmd):
-    os.system(f'screen -S server -p 0 -X stuff "{cmd}^M"')
+def session_exists():
+    return os.system("tmux has-session -t minecraft 2> /dev/null") == 0
 
 
-def status():
-    output = os.popen('screen -ls').read()
-    if '.server' in output:
-        print("Server is running.")
-        return True
-    else:
-        print("Server is not running.")
-        return False
+def send_command(command):
+    patched = re.sub(r"[^\w]", "\\\\\\g<0>", command, 0)
+    os.system(f"tmux send-keys -t minecraft.0 {patched} ENTER")
+
+
+def attach_session():
+    os.system("tmux attach -t minecraft")
 
 
 class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
@@ -30,52 +32,31 @@ class Server(commands.Cog, command_attrs=dict(hidden=True), name="Server"):
     @commands.has_permissions(administrator=True)
     async def start(self, ctx):
         """Запускает сервер Rumblur."""
-        if not status():
-            os.chdir(minecraft_dir)
-            os.system('bash start.sh')
-            await ctx.send(f"`Запуск сервера...`")
-            await asyncio.sleep(10)
-            await ctx.send(f"`Сервер запущен.`")
+        if not session_exists():
+            os.system("mtc start --only")
+            await ctx.send(f"`Отправлен запрос на включение сервера...`")
         else:
-            await ctx.send(f"`Сервер уже запущен и работает.`")
+            await ctx.send(f"`Сервер уже запущен и работает. Запуск не требуется.`")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def restart(self, ctx):
         """Перезагружает сервер Rumblur."""
-        server_command('tellraw @a {\"text\":\"Перезагрузка через 30 секунд!\",\"color\":\"light_purple\"}')
-        await ctx.send(f"`Оповещение игроков. Перезагрузка через 30 секунд.`")
-        await asyncio.sleep(15)
-        server_command(
-            'tellraw @a {\"text\":\"Перезагрузка через 15 секунд! Началось сохранение...\",\"color\":\"light_purple\"}')
-        await ctx.send(f"`Оповещение игроков. Перезагрузка через 15 секунд. Сохранение через 5 секунд.`")
-        await asyncio.sleep(5)
-        server_command('save-all')
-        await ctx.send(f"`Сохранение мира...`")
-        await asyncio.sleep(10)
-        server_command('stop')
-        await ctx.send(f"`Остановка сервера...`")
-        await asyncio.sleep(15)
-        os.chdir(minecraft_dir)
-        os.system('bash start.sh')
-        await ctx.send(f"`Запуск сервера...`")
-        await asyncio.sleep(15)
-        await ctx.send(f"`Сервер запущен.`")
+        if session_exists():
+            os.system("mtc restart --now")
+            await ctx.send(f"`Отправлен запрос на перезагрузку сервера...`")
+        else:
+            await ctx.send(f"`Сервер выключен. Нечего перезагружать.`")
 
     @commands.command()
     @commands.has_permissions(administrator=True)
     async def stop(self, ctx):
         """Останавливает сервер Rumblur."""
-        if status():
-            server_command('save-all')
-            await ctx.send(f"`Сохранение мира...`")
-            await asyncio.sleep(10)
-            server_command('stop')
-            await ctx.send(f"`Остановка сервера...`")
-            await asyncio.sleep(10)
-            await ctx.send(f"`Сервер выключен.`")
+        if session_exists():
+            os.system("mtc shutdown --confirm")
+            await ctx.send(f"`Отправлен запрос на выключение сервера...`")
         else:
-            await ctx.send(f"`Сервер выключен.`")
+            await ctx.send(f"`Сервер уже выключен. Остановка не требуется.`")
 
 
 def setup(bot):
