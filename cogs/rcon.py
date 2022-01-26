@@ -1,4 +1,3 @@
-import datetime
 import re
 
 import discord
@@ -25,7 +24,7 @@ class RCON(commands.Cog, command_attrs=dict(hidden=True), name="RCON"):
                     pretty_response = re.sub('(§[0-9a-fA-Fkmorln])|(§\[#[0-9a-fA-F]{1,6}])|(§$)', '', response)
                     if len(response) <= 1800:
                         await ctx.send(f"Ответ: ```{pretty_response}```")
-                    elif len(response) == 0:
+                    elif len(response) <= 0:
                         await ctx.send("`Пустой ответ`")
                     else:
                         await ctx.send("`Ответ был слишком большим.`",
