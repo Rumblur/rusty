@@ -1,6 +1,5 @@
 import os
 import sys
-from asyncio import sleep
 
 import discord
 from discord.ext import commands
@@ -30,9 +29,4 @@ async def on_ready():
                 print(f'Failed to load module {module}.{os.path.splitext(extension)[0]}.', file=sys.stderr)
                 print(ex)
 
-while True:
-    try:
-        client.run(secret.token)
-    except Exception as e:
-        print(f'Restarting in 10s\nError: {e}')
-        sleep(10)
+client.run(secret.token)
