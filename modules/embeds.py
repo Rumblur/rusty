@@ -8,7 +8,7 @@ from modules import utils
 bot_admin_name = "<@%s>" % (utils.bot_owner())
 
 
-def status_embed(motd: str, ip: str, version: str, ping: str, online_players_count: int, max_players_count: int,
+def status_embed(motd: str, ip: str, version: str, online_players_count: int, max_players_count: int,
                  player_nicknames: str, tag: str) -> Embed:
     embed = discord.Embed(title="Статус сервера Rumblur", color=discord.Colour.green(),
                           timestamp=datetime.datetime.utcnow())
@@ -18,7 +18,7 @@ def status_embed(motd: str, ip: str, version: str, ping: str, online_players_cou
     embed.add_field(name="Сообщение дня", value=f"```{motd}```", inline=False)
     embed.add_field(name="IP-адрес", value=f"{ip}", inline=True)
     embed.add_field(name="Версия", value=f"{version}", inline=True)
-    embed.add_field(name="Задержка", value=f"{ping}", inline=True)
+    embed.add_field(name="Статус", value=f"Онлайн", inline=True)
     embed.add_field(
         name=f"{online_players_count} из " + f"{max_players_count} игроков сейчас на сервере:",
         value=f"```{player_nicknames}```", inline=False)

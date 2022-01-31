@@ -137,16 +137,11 @@ async def check_server_status():
                     player_names = ""
                     version = server.status().version.name
 
-                t1 = time.perf_counter()
-                t2 = time.perf_counter()
-                ping = f"{round((t2 - t1) * 1000)} мс"
-
             await update_presence(num_players, max_players)
             await INFO_MESSAGE.edit(content="Слежу за сервером...",
                                     embed=status_embed(build_motd(server.status()),
                                                        IP,
                                                        version,
-                                                       ping,
                                                        num_players,
                                                        max_players,
                                                        build_player_list(num_players, player_names),
