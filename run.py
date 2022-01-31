@@ -2,6 +2,7 @@ import asyncio
 import os
 import subprocess
 import sys
+import time
 from socket import timeout, gaierror
 
 import discord
@@ -136,10 +137,9 @@ async def check_server_status():
                     player_names = ""
                     version = server.status().version.name
 
-                try:
-                    ping = f"{int(server.ping())} мс"
-                except IOError:
-                    ping = "N/A"
+                t1 = time.perf_counter()
+                t2 = time.perf_counter()
+                ping = f"{round((t2 - t1) * 1000)} мс"
 
             await update_presence(num_players, max_players)
             await INFO_MESSAGE.edit(content="Слежу за сервером...",
