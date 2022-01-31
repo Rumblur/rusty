@@ -3,8 +3,13 @@ import datetime
 import discord
 from discord import Embed
 
+from modules import utils
 
-def status_embed(motd: str, ip: str, version: str, online_players_count: int, max_players_count: int, player_nicknames: str, tag: str) -> Embed:
+bot_admin_name = "<@%s>" % (utils.bot_owner())
+
+
+def status_embed(motd: str, ip: str, version: str, ping: str, online_players_count: int, max_players_count: int,
+                 player_nicknames: str, tag: str) -> Embed:
     embed = discord.Embed(title="Статус сервера Rumblur", color=discord.Colour.green(),
                           timestamp=datetime.datetime.utcnow())
     embed.set_author(name="Rumblur Classic", url="https://rumblur.hrebeni.uk",
@@ -12,8 +17,8 @@ def status_embed(motd: str, ip: str, version: str, online_players_count: int, ma
     embed.set_thumbnail(url="https://rumblur.hrebeni.uk/images/chainfire.gif")
     embed.add_field(name="Сообщение дня", value=f"```{motd}```", inline=False)
     embed.add_field(name="IP-адрес", value=f"{ip}", inline=True)
-    embed.add_field(name="Версия сервера", value=f"{version}", inline=True)
-    embed.add_field(name="Статус", value="Онлайн", inline=True)
+    embed.add_field(name="Версия", value=f"{version}", inline=True)
+    embed.add_field(name="Задержка", value=f"{ping}", inline=True)
     embed.add_field(
         name=f"{online_players_count} из " + f"{max_players_count} игроков сейчас на сервере:",
         value=f"```{player_nicknames}```", inline=False)
@@ -39,6 +44,13 @@ def info_crash_embed(message: str, tag: str) -> Embed:
     embed.add_field(name="Причина",
                     value=f"`{message}`", inline=False)
     embed.add_field(name="Как решить проблему?",
-                    value=f"Пожалуйста, обратитесь к администрации через сообщения группы ВКонтакте или напишите в канал <#741255156242317372> с упоминанием одного из администраторов.", inline=False)
+                    value=f"Пожалуйста, обратитесь к администрации через сообщения группы ВКонтакте или напишите в канал <#741255156242317372> с упоминанием одного из администраторов.",
+                    inline=False)
     embed.set_footer(text=f"Rusty v{tag}", icon_url="https://rumblur.hrebeni.uk/images/paws.png")
+    return embed
+
+
+async def admin_notice():
+    embed = discord.Embed(title="Эта команда предназначена только для администраторов бота",
+                          description="Если вам нужна данная команда, попросите %s" % bot_admin_name, color=discord.Colour.red())
     return embed
