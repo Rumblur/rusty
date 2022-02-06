@@ -76,7 +76,7 @@ async def on_ready():
                 print(f"Failed to load module {module}.{os.path.splitext(extension)[0]}.", file=sys.stderr)
                 print(ex)
 
-    client.loop.create_task(bridge_loop())
+    bridge_loop.start()
     print("Bridge from Minecraft to Discord and vice versa activated.")
     client.loop.create_task(check_server_status())
     print("Checking server status.")
