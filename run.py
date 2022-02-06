@@ -103,7 +103,7 @@ def to_chat(message):
     emojiName = re.compile(":(?<=:)(.*)(?=:):")
     for emoji in customEmoji.findall(messageText):
         messageText = messageText.replace(emoji, emojiName.search(emoji).group())
-    for attachment in message.attachments:
+    for attachment in message.attachements:
         messageText += f" {attachment.url}"
     command = """tellraw @a ["",{"text":"["},{"text":"%s","color":"dark_aqua"},{"text":" | "},{"text":"#%s","color":"dark_aqua"},{"text":"] %s"}]""" % (
         message.author.display_name, message.channel.name, messageText)
