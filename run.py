@@ -1,6 +1,5 @@
 import asyncio
 import os
-import subprocess
 import sys
 from socket import timeout, gaierror
 
@@ -28,10 +27,6 @@ server = MinecraftServer.lookup(IP)
 if not os.path.exists('data'):
     print("Please configure this bot according to readme file.")
     sys.exit("data folder and it's contents are missing")
-
-
-def get_git_tag() -> str:
-    return subprocess.check_output(['git', 'describe', '--tags']).decode('ascii').strip()
 
 
 def list_module(directory):
@@ -142,15 +137,14 @@ async def check_server_status():
                                                        version,
                                                        num_players,
                                                        max_players,
-                                                       build_player_list(num_players, player_names),
-                                                       get_git_tag()))
+                                                       build_player_list(num_players, player_names)))
             await asyncio.sleep(60)
         else:
             await client.change_presence(
                 activity=discord.Activity(type=discord.ActivityType.watching,
                                           name=f"на мёртвый сервер"),
                 status=discord.Status.dnd)
-            await INFO_MESSAGE.edit(content="Whoops...", embed=info_crash_embed("Connection to server refused", get_git_tag()))
+            await INFO_MESSAGE.edit(content="Whoops...", embed=info_crash_embed("Connection to server refused"))
             await ADMIN_CHANNEL_ID.send(embed=admin_crash_embed("Connection to server refused"))
             await asyncio.sleep(180)
 

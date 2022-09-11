@@ -9,7 +9,7 @@ bot_admin_name = "<@%s>" % (utils.bot_owner())
 
 
 def status_embed(motd: str, ip: str, version: str, online_players_count: int, max_players_count: int,
-                 player_nicknames: str, tag: str) -> Embed:
+                 player_nicknames: str) -> Embed:
     embed = discord.Embed(title="Статус сервера Rumblur", color=discord.Colour.green(),
                           timestamp=datetime.datetime.utcnow())
     embed.set_author(name="Rumblur Classic", url="https://rumblur.space",
@@ -22,7 +22,7 @@ def status_embed(motd: str, ip: str, version: str, online_players_count: int, ma
     embed.add_field(
         name=f"{online_players_count} из " + f"{max_players_count} игроков сейчас на сервере:",
         value=f"```{player_nicknames}```", inline=False)
-    embed.set_footer(text=f"Rusty v{tag}", icon_url="https://rumblur.space/images/paws.png")
+    embed.set_footer(text=f"Rusty on Docker", icon_url="https://rumblur.space/images/paws.png")
     return embed
 
 
@@ -35,7 +35,7 @@ def admin_crash_embed(message: str) -> Embed:
     return embed
 
 
-def info_crash_embed(message: str, tag: str) -> Embed:
+def info_crash_embed(message: str) -> Embed:
     embed = discord.Embed(title="Сервер недоступен", color=discord.Colour.red(),
                           timestamp=datetime.datetime.utcnow())
     embed.set_author(name="Rumblur Classic", url="https://rumblur.space",
@@ -46,7 +46,7 @@ def info_crash_embed(message: str, tag: str) -> Embed:
     embed.add_field(name="Как решить проблему?",
                     value=f"Пожалуйста, обратитесь к администрации через сообщения группы ВКонтакте или напишите в канал <#741255156242317372> с упоминанием одного из администраторов.",
                     inline=False)
-    embed.set_footer(text=f"Rusty v{tag}", icon_url="https://rumblur.space/images/paws.png")
+    embed.set_footer(text=f"Rusty on Docker", icon_url="https://rumblur.space/images/paws.png")
     return embed
 
 
