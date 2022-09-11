@@ -2,14 +2,12 @@ import asyncio
 import os
 import subprocess
 import sys
-import time
 from socket import timeout, gaierror
 
 import discord
 from discord.ext import commands
 from mcstatus import MinecraftServer
 
-import secret
 from modules.embeds import status_embed, info_crash_embed, admin_crash_embed
 from modules.status import build_player_list, build_motd
 
@@ -23,7 +21,7 @@ use_query = True
 ADMIN_CHANNEL_ID = 0
 INFO_MESSAGE = 0
 
-IP = "rumblur.hrebeni.uk"
+IP = os.environ.get('IP')
 
 server = MinecraftServer.lookup(IP)
 
@@ -162,4 +160,4 @@ async def on_disconnect():
     print("Disconnected...")
 
 
-client.run(secret.token, reconnect=True)
+client.run(os.environ.get('TOKEN'), reconnect=True)
